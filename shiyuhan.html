@@ -189,8 +189,10 @@
         <h1>能做我女朋友吗?</h1>
         
         <div class="image-container">
-            <!-- 关键：使用 GitHub Pages 兼容的相对路径 ./ -->
-            <img id="displayImage" src="./1.jpg" alt="开心笑容的男士，粉色心形背景">
+            <!-- GitHub Pages 绝对路径（适配你的用户名和仓库） -->
+            <img id="displayImage" 
+                 src="https://azrue-wangze.github.io/html-demo/1.jpg" 
+                 alt="开心笑容的男士，粉色心形背景">
         </div>
         
         <div class="buttons">
@@ -211,26 +213,24 @@
         const successMessage = document.getElementById('successMessage');
         const pageTitle = document.querySelector('h1');
         
-        // 关键：图片路径添加 ./ ，确保 GitHub Pages 识别
+        // GitHub Pages 绝对路径（适配你的用户名和仓库）
         const images = [
-            "./1.jpg",  // 对应开心表情图
-            "./2.jpg",  // 对应证件照
-            "./3.png"   // 对应严肃表情图
+            "https://azrue-wangze.github.io/html-demo/1.jpg",  // 开心表情图
+            "https://azrue-wangze.github.io/html-demo/2.jpg",  // 证件照
+            "https://azrue-wangze.github.io/html-demo/3.png"   // 严肃表情图
         ];
         
         let noCount = 0;
         let currentSize = 18; 
-        const maxSize = 40; // 限制按钮最大尺寸，避免页面错乱
+        const maxSize = 40; // 限制按钮最大尺寸
         
-        // "不可以"按钮逻辑（增加尺寸限制）
+        // "不可以"按钮逻辑
         noBtn.addEventListener('click', function() {
             noCount++;
-            // 切换到第二张图（仅第一次点击切换）
             if (noCount === 1) {
                 displayImage.src = images[1];
                 displayImage.alt = "正式证件照的男士";
             }
-            // 按钮放大（不超过最大尺寸）
             if (currentSize < maxSize) {
                 currentSize += 2;
                 noBtn.style.fontSize = `${currentSize}px`;
@@ -241,7 +241,6 @@
         yesBtn.addEventListener('click', function() {
             displayImage.src = images[2];
             displayImage.alt = "严肃表情的男士";
-            // 隐藏按钮+显示消息+改标题
             yesBtn.style.display = 'none';
             noBtn.style.display = 'none';
             successMessage.style.display = 'block';
@@ -256,7 +255,6 @@
             });
         }
         
-        // 页面加载完成后预加载图片
         window.addEventListener('load', preloadImages);
     </script>
 </body>
