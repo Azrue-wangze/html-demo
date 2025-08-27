@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>惊不惊喜，朋友</title>
+    <title>表白邀请</title>
     <style>
         * {
             margin: 0;
@@ -124,16 +124,6 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        
-        .instructions {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f8f8;
-            border-radius: 10px;
-            font-size: 14px;
-            color: #666;
-            text-align: left;
-        }
 
         /* 移动端优化 */
         @media screen and (max-width: 768px) {
@@ -172,7 +162,7 @@
             }
         }
 
-        /* 针对小屏幕手机的额外优化 */
+        /* 小屏幕手机优化 */
         @media screen and (max-width: 380px) {
             .container {
                 padding: 15px;
@@ -199,7 +189,8 @@
         <h1>能做我女朋友吗?</h1>
         
         <div class="image-container">
-            <img id="displayImage" src="1.jpg" alt="开心笑容的男士">
+            <!-- 关键：使用 GitHub Pages 兼容的相对路径 ./ -->
+            <img id="displayImage" src="./1.jpg" alt="开心笑容的男士，粉色心形背景">
         </div>
         
         <div class="buttons">
@@ -210,14 +201,6 @@
         <div id="successMessage" class="success-message">
             <span class="heart">❤</span> 我也喜欢你! <span class="heart">❤</span>
         </div>
-        
-        <div class="instructions">
-            <p><strong>使用说明：</strong></p>
-            <p>1. 将此HTML文件保存到与图片相同的目录中</p>
-            <p>2. 将图片命名为1.jpg、2.jpg和3.png</p>
-            <p>3. 在浏览器中打开此HTML文件即可使用</p>
-            <p>4. 如果图片无法显示，请检查文件名是否正确</p>
-        </div>
     </div>
 
     <script>
@@ -226,82 +209,55 @@
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const successMessage = document.getElementById('successMessage');
+        const pageTitle = document.querySelector('h1');
         
-        // 图片路径数组 - 使用相对路径
+        // 关键：图片路径添加 ./ ，确保 GitHub Pages 识别
         const images = [
-            "1.jpg",  // 开心笑容的男士，粉色心形背景
-            "2.jpg",  // 正式证件照的男士
-            "3.png"   // 严肃表情的男士
+            "./1.jpg",  // 对应开心表情图
+            "./2.jpg",  // 对应证件照
+            "./3.png"   // 对应严肃表情图
         ];
         
         let noCount = 0;
-        let currentSize = 18; // 初始字体大小
+        let currentSize = 18; 
+        const maxSize = 40; // 限制按钮最大尺寸，避免页面错乱
         
-        // "不可以"按钮点击事件
+        // "不可以"按钮逻辑（增加尺寸限制）
         noBtn.addEventListener('click', function() {
             noCount++;
-            
-            // 切换到第二张图片
+            // 切换到第二张图（仅第一次点击切换）
             if (noCount === 1) {
                 displayImage.src = images[1];
                 displayImage.alt = "正式证件照的男士";
             }
-            
-            // 增加按钮大小
-            currentSize += 2;
-            noBtn.style.fontSize = currentSize + 'px';
+            // 按钮放大（不超过最大尺寸）
+            if (currentSize < maxSize) {
+                currentSize += 2;
+                noBtn.style.fontSize = `${currentSize}px`;
+            }
         });
         
-        // "可以"按钮点击事件
+        // "可以"按钮逻辑
         yesBtn.addEventListener('click', function() {
-            // 切换到第三张图片
             displayImage.src = images[2];
             displayImage.alt = "严肃表情的男士";
-            
-            // 隐藏按钮
-            yesBtn.style.display = 'none';
-            noBtn.style.display = 'none';
-            
-            // 显示成功消息
-            successMessage.style.display = 'block';
-            
-            // 更新标题文本
-            document.querySelector('h1').textContent = '太棒了！我们在一起吧！';
-        });
-
-        // 添加触摸事件支持（针对移动端）
-        yesBtn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            // 重用点击事件逻辑
-            displayImage.src = images[2];
-            displayImage.alt = "严肃表情的男士";
+            // 隐藏按钮+显示消息+改标题
             yesBtn.style.display = 'none';
             noBtn.style.display = 'none';
             successMessage.style.display = 'block';
-            document.querySelector('h1').textContent = '太棒了！我们在一起吧！';
-        });
-
-        noBtn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            noCount++;
-            if (noCount === 1) {
-                displayImage.src = images[1];
-                displayImage.alt = "正式证件照的男士";
-            }
-            currentSize += 2;
-            noBtn.style.fontSize = currentSize + 'px';
+            pageTitle.textContent = '太棒了！我们在一起吧！';
         });
         
-        // 预加载图片
+        // 预加载图片（避免点击时加载延迟）
         function preloadImages() {
-            for (let i = 0; i < images.length; i++) {
+            images.forEach(src => {
                 const img = new Image();
-                img.src = images[i];
-            }
+                img.src = src;
+            });
         }
         
-        // 页面加载时预加载图片
-        window.onload = preloadImages;
+        // 页面加载完成后预加载图片
+        window.addEventListener('load', preloadImages);
     </script>
 </body>
 </html>
